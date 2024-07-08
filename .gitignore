@@ -48,3 +48,8 @@ CMakeUserPresets.json
 ##
 build/
 .cache/
+tests.dSYM/
+
+## ignored files built by build.sh
+msf
+tests
