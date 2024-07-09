@@ -38,14 +38,12 @@ std::vector<Edge> generate_gilbert_graph(std::mt19937_64 &gen, Node n,
 
   while (true) {
     cursor += geom(gen) + 1;
-    if (cursor >= max_edges)
-      break;
+    if (cursor >= max_edges) break;
 
     Node i = cursor / n;
     Node j = cursor % n;
 
-    if (i >= j)
-      continue;
+    if (i >= j) continue;
 
     Weight w = weight(gen);
     edges.push_back({i, j, w});
@@ -86,4 +84,4 @@ bool test_gilbert_graph() {
   return true;
 }
 
-#endif // GRAPH_HPP
+#endif  // GRAPH_HPP

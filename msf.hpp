@@ -123,7 +123,8 @@ using UnionFindPCAndRank = UnionFind<true, true>;
 Node max_node(std::vector<Edge> &edges) {
   assert(edges.size());
 
-  // PERF: max_element of an vector with a custom compare function
+  // PERF: max_element of an vector with a custom compare function, that just
+  // compares bigger of the nodes indicies
   auto m = *std::max_element(
       edges.begin(), edges.end(), [](const Edge &a, const Edge &b) {
         return std::max(a.from, a.to) < std::max(b.from, b.to);

@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <memory>
+#include <vector>
 
 #include "graph.hpp"
 #include "msf.hpp"
@@ -84,6 +85,38 @@ bool test_num_groups() {
   return true;
 }
 
+bool test_max_node() {
+  std::vector<Edge> edges;
+
+  edges.push_back({0, 1, 1});
+  edges.push_back({0, 2, 1});
+  edges.push_back({0, 3, 1});
+  edges.push_back({0, 4, 1});
+  edges.push_back({0, 5, 1});
+  edges.push_back({7, 5, 1});
+  edges.push_back({8, 5, 1});
+  edges.push_back({9, 5, 1});
+  edges.push_back({10, 5, 1});
+
+  fail_unless_eq(max_node(edges), Node(10));
+
+  edges.push_back({10, 500, 1});
+
+  fail_unless_eq(max_node(edges), Node(500));
+
+  edges.pop_back();
+  edges.pop_back();
+
+  fail_unless_eq(max_node(edges), Node(9));
+
+  /*
+   * std::vector<Edge> empty;
+   * fail_unless_eq(max_node(empty), Node(-1));
+   * */
+
+  return true;
+}
+
 int main() {
   run_test(test_gilbert_graph);
 
@@ -92,6 +125,8 @@ int main() {
   run_test_all_ufs(test_union_find_pc_and_rank);
 
   run_test(test_num_groups);
+
+  run_test(test_max_node);
 
   return 0;
 }
