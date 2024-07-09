@@ -93,11 +93,15 @@ class UnionFind {
     num_groups--;
   }
 
-  void combine(Node x, Node y) {
+  bool combine(Node x, Node y) {
     Node root_x = find(x);
     Node root_y = find(y);
 
-    if (root_x != root_y) link(root_x, root_y);
+    // already united, returns false as in "unsuccessful"
+    if (root_x == root_y) return false;
+
+    link(root_x, root_y);
+    return true;
   }
 
   Node get_parent(Node x) {  //
@@ -154,11 +158,21 @@ KruskalResult kruskal(std::vector<Edge> &edges) {
             [](const Edge &a, const Edge &b) { return a.weight < b.weight; });
 
   for (const auto &edge : edges) {
-    if (uf.get_parent(edge.from) != uf.get_parent(edge.to)) {
-      uf.combine(edge.from, edge.to);
+    if (uf.combine(edge.from, edge.to)) {
       msf_edges.push_back(edge);
       total_weight += edge.weight;
     }
+
+    // PERF: To minimize number of uf.get_parent calls, i modified:
+    // - combine: now returns true if combined and false, if already in the same
+    //   tree
+    // - thi if: now we just check for return value of combine
+    // Previously:
+    // if (uf.get_parent(edge.from) != uf.get_parent(edge.to)) {
+    //   uf.combine(edge.from, edge.to);
+    //   msf_edges.push_back(edge);
+    //   total_weight += edge.weight;
+    // }
   }
 
   return KruskalResult{msf_edges, total_weight, uf.number_of_groups() == 1,

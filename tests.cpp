@@ -140,6 +140,7 @@ bool test_kruskal_msf() {
   KruskalResult result = kruskal<UnionFind>(edges);
 
   fail_if(result.is_spanning_tree);
+  fail_unless_eq(result.total_weight, 23);
 
   return true;
 }
@@ -168,6 +169,7 @@ bool test_kruskal_mst() {
   KruskalResult result = kruskal<UnionFind>(edges);
 
   fail_unless(result.is_spanning_tree);
+  fail_unless_eq(result.total_weight, 93);
 
   return true;
 }
