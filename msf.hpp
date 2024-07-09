@@ -68,13 +68,13 @@ class UnionFind {
     const auto parent_x = parents.get_parent(x);
     if (parent_x == x) return x;
 
+    Node representant_x = find(parent_x);
+
     if constexpr (PathCompression) {
-      auto representant_x = find(parent_x);
       parents.set_parent(x, representant_x);
-      return representant_x;
-    } else {
-      return find(parent_x);
     }
+
+    return representant_x;
   }
 
   void link(Node root_x, Node root_y) {
@@ -96,7 +96,7 @@ class UnionFind {
     Node root_x = find(x);
     Node root_y = find(y);
 
-    link(root_x, root_y);
+    if (root_x != root_y) link(root_x, root_y);
   }
 
   Node get_parent(Node x) {  //
