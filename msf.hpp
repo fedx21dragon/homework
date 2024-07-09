@@ -150,7 +150,12 @@ KruskalResult kruskal(std::vector<Edge> &edges) {
   UnionFind uf(n + 1);
   Weight total_weight = 0;
 
-  abort();  // not implemented
+  for (const auto &edge : edges) {
+    if (uf.get_parent(edge.from) != uf.get_parent(edge.to)) {
+      uf.combine(edge.from, edge.to);
+      total_weight += edge.weight;
+    }
+  }
 
   return KruskalResult{msf_edges, total_weight, uf.number_of_groups() == 1,
                        uf.number_of_parent_accesses()};
