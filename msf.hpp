@@ -142,7 +142,7 @@ struct KruskalResult {
   uint64_t parent_accesses;
 };
 
-template <typename UnionFind>  //
+template <typename UnionFind>
 KruskalResult kruskal(std::vector<Edge> &edges) {
   std::vector<Edge> msf_edges;
 
@@ -150,9 +150,13 @@ KruskalResult kruskal(std::vector<Edge> &edges) {
   UnionFind uf(n + 1);
   Weight total_weight = 0;
 
+  std::sort(edges.begin(), edges.end(),
+            [](const Edge &a, const Edge &b) { return a.weight < b.weight; });
+
   for (const auto &edge : edges) {
     if (uf.get_parent(edge.from) != uf.get_parent(edge.to)) {
       uf.combine(edge.from, edge.to);
+      msf_edges.push_back(edge);
       total_weight += edge.weight;
     }
   }

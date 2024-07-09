@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdio>
 #include <memory>
 #include <vector>
@@ -117,6 +118,60 @@ bool test_max_node() {
   return true;
 }
 
+template <typename UnionFind>
+bool test_kruskal_msf() {
+  std::vector<Edge> edges;
+  edges.push_back({0, 1, 1});
+  edges.push_back({0, 2, 1});
+  edges.push_back({2, 1, 9});
+  edges.push_back({0, 3, 5});
+  edges.push_back({0, 4, 9});
+  edges.push_back({3, 4, 3});
+
+  edges.push_back({6, 5, 6});
+  edges.push_back({7, 5, 1});
+  edges.push_back({8, 5, 2});
+  edges.push_back({9, 5, 3});
+  edges.push_back({9, 7, 7});
+  edges.push_back({7, 8, 4});
+  edges.push_back({10, 5, 2});
+  edges.push_back({10, 7, 1});
+
+  KruskalResult result = kruskal<UnionFind>(edges);
+
+  fail_if(result.is_spanning_tree);
+
+  return true;
+}
+
+template <typename UnionFind>
+bool test_kruskal_mst() {
+  std::vector<Edge> edges;
+  edges.push_back({0, 1, 1});
+  edges.push_back({0, 2, 1});
+  edges.push_back({2, 1, 9});
+  edges.push_back({0, 3, 5});
+  edges.push_back({0, 4, 9});
+  edges.push_back({3, 4, 3});
+
+  edges.push_back({6, 5, 6});
+  edges.push_back({7, 5, 1});
+  edges.push_back({8, 5, 2});
+  edges.push_back({9, 5, 3});
+  edges.push_back({9, 7, 7});
+  edges.push_back({7, 8, 4});
+  edges.push_back({10, 5, 2});
+  edges.push_back({10, 7, 1});
+
+  edges.push_back({10, 0, 70});
+
+  KruskalResult result = kruskal<UnionFind>(edges);
+
+  fail_unless(result.is_spanning_tree);
+
+  return true;
+}
+
 int main() {
   run_test(test_gilbert_graph);
 
@@ -127,6 +182,9 @@ int main() {
   run_test(test_num_groups);
 
   run_test(test_max_node);
+
+  run_test_all_ufs(test_kruskal_msf);
+  run_test_all_ufs(test_kruskal_mst);
 
   return 0;
 }
