@@ -1,7 +1,9 @@
 #include "msf.hpp"
-#include "graph.hpp"
+
 #include <fstream>
 #include <random>
+
+#include "graph.hpp"
 
 int main() {
   constexpr Node min_n = 1 << 5;
@@ -19,16 +21,29 @@ int main() {
     for (Node n = min_n; n <= max_n; n *= 2) {
       auto edges = generate_gilbert_graph(gen, n, avg_deg);
       const auto m = edges.size();
+      KruskalResult res;
 
       if (n < max_n / 100) {
-        auto res = kruskal<UnionFindNoPCNoRank>(edges);
+        res = kruskal<UnionFindNoPCNoRank>(edges);
         output << n << ',' << m << ',' << avg_deg << ",naive,"
                << res.parent_accesses << std::endl;
       }
 
+      res = kruskal<UnionFindPCOnly>(edges);
+      output << n << ',' << m << ',' << avg_deg << ",pc," << res.parent_accesses
+             << std::endl;
+      res = kruskal<UnionFindRankOnly>(edges);
+      output << n << ',' << m << ',' << avg_deg << ",rank,"
+             << res.parent_accesses << std::endl;
+      res = kruskal<UnionFindPCAndRank>(edges);
+      output << n << ',' << m << ',' << avg_deg << ",pc+rank,"
+             << res.parent_accesses << std::endl;
+
       // Hier sollen weitere Varianten vermessen werden
     }
   }
+
+  output.close();
 
   return 0;
 }

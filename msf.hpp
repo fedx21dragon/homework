@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <queue>
 #ifndef MSF_HPP
 #define MSF_HPP
 
@@ -154,10 +155,13 @@ KruskalResult kruskal(std::vector<Edge> &edges) {
   UnionFind uf(n + 1);
   Weight total_weight = 0;
 
-  std::sort(edges.begin(), edges.end(),
-            [](const Edge &a, const Edge &b) { return a.weight < b.weight; });
+  // INFO: I didn't know, if i could sort this vector in-place, so i settled for
+  // a common ground, which in this case, is a priority_queue
+  std::priority_queue pq(edges.begin(), edges.end(),
+                         [](Edge a, Edge b) { return a.weight > b.weight; });
 
-  for (const auto &edge : edges) {
+  while (!pq.empty()) {
+    Edge edge = pq.top();
     if (uf.combine(edge.from, edge.to)) {
       msf_edges.push_back(edge);
       total_weight += edge.weight;
@@ -173,6 +177,8 @@ KruskalResult kruskal(std::vector<Edge> &edges) {
     //   msf_edges.push_back(edge);
     //   total_weight += edge.weight;
     // }
+
+    pq.pop();
   }
 
   return KruskalResult{msf_edges, total_weight, uf.number_of_groups() == 1,
