@@ -1,13 +1,12 @@
 #pragma once
 
-#include <map>
-#include <queue>
 #ifndef MSF_HPP
 #define MSF_HPP
 
 #include <algorithm>
 #include <cassert>
 #include <numeric>
+#include <queue>
 #include <vector>
 
 #include "graph.hpp"
