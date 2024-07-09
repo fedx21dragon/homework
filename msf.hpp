@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #ifndef MSF_HPP
 #define MSF_HPP
 
@@ -120,8 +121,15 @@ using UnionFindPCAndRank = UnionFind<true, true>;
 // Die Funktion `max_node` berechnet den größten Knoten-Index,
 // der in den Kanten `edges` vorkommt.
 Node max_node(std::vector<Edge> &edges) {
-  (void)edges;  // vermeide Warnung: unused variable
-  abort();      // not implemented !
+  assert(edges.size());
+
+  // PERF: max_element of an vector with a custom compare function
+  auto m = *std::max_element(
+      edges.begin(), edges.end(), [](const Edge &a, const Edge &b) {
+        return std::max(a.from, a.to) < std::max(b.from, b.to);
+      });
+
+  return std::max(m.from, m.to);
 }
 
 struct KruskalResult {
