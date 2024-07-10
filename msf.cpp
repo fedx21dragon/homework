@@ -32,14 +32,14 @@ int main() {
       res = kruskal<UnionFindPCOnly>(edges);
       output << n << ',' << m << ',' << avg_deg << ",pc," << res.parent_accesses
              << std::endl;
+
       res = kruskal<UnionFindRankOnly>(edges);
       output << n << ',' << m << ',' << avg_deg << ",rank,"
              << res.parent_accesses << std::endl;
+
       res = kruskal<UnionFindPCAndRank>(edges);
       output << n << ',' << m << ',' << avg_deg << ",pc+rank,"
              << res.parent_accesses << std::endl;
-
-      // Hier sollen weitere Varianten vermessen werden
     }
   }
 
