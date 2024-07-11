@@ -18,16 +18,19 @@ data = pd.read_csv("kruskal.csv")
 # ).reset_index()
 x = data["n"]
 y = data["accesses"]
+z = data["unionfind"]
+m = data["m"]
 print(data.head())
 
 # Erstellen des ersten Plots
 plt.figure(figsize=(12, 6))
 sns.set(style="whitegrid")
 
-sns.lineplot(data, x='n', y='accesses')
+sns.lineplot(data, x='n', y='accesses', marker='o', linestyle='-', label = "union_find")
+# sns.lineplot(data, x = 'n', z = 'unionfind', marker='^', linestyle='-.', label = "union_find")
+# sns.lineplot(data, x= 'n', m = 'm', marker='*', linestyle='--', label = "union_find" )
 
-
-plt.semilogx(base=2)
+plt.semilogx()
 plt.xlabel("Knotenanzahl n")
 plt.ylabel("durchschnittliche Elternarray-Zugriffe pro Kante")
 plt.title('Elternarray-Zugriffe pro Kante für verschiedene UnionFind-Varianten')
