@@ -11,26 +11,21 @@ import seaborn as sns
 import pandas as pd
 
 data = pd.read_csv("kruskal.csv")
-# Gruppieren der Daten nach Knotenanzahl und UnionFind-Variante
-# grouped_data = data.groupby(['n', 'union_find']).agg(
-#     mean_accesses=('accesses', 'mean'),
-#     std_accesses=('accesses', 'std')
-# ).reset_index()
-x = data["n"]
-y = data["accesses"]
-z = data["unionfind"]
-m = data["m"]
+
+
+print(data.describe())
 print(data.head())
 
 # Erstellen des ersten Plots
 plt.figure(figsize=(12, 6))
 sns.set(style="whitegrid")
 
-sns.lineplot(data, x='n', y='accesses', marker='o', linestyle='-', label = "union_find")
-# sns.lineplot(data, x = 'n', z = 'unionfind', marker='^', linestyle='-.', label = "union_find")
-# sns.lineplot(data, x= 'n', m = 'm', marker='*', linestyle='--', label = "union_find" )
+plt.xscale('log')
+plt.yscale('log')
 
-plt.semilogx()
+sns.lineplot(data, x='n', y='accesses', marker='o', linestyle='-', hue='unionfind', errorbar='sd')
+
+
 plt.xlabel("Knotenanzahl n")
 plt.ylabel("durchschnittliche Elternarray-Zugriffe pro Kante")
 plt.title('Elternarray-Zugriffe pro Kante für verschiedene UnionFind-Varianten')
@@ -41,3 +36,25 @@ plt.tight_layout()
 plt.savefig("kruskal.pdf")
 plt.close()
 
+# Erstellen des zweiten Plots
+data = data.loc[data['unionfind'].isin(['pc','rank'])]
+data['mlogn'] = data['accesses'] * data['m']
+
+plt.figure(figsize=(12, 6))
+sns.set(style="whitegrid")
+
+plt.xscale('log')
+plt.yscale('log')
+
+sns.lineplot(data, x='n', y='mlogn', marker='*', linestyle='--', hue='unionfind', errorbar='sd')
+
+
+plt.xlabel("Knotenanzahl n")
+plt.ylabel("durchschnittliche Elternarray-Zugriffe pro Kante,  m log(n)")
+plt.title('Elternarray-Zugriffe pro Kante für verschiedene UnionFind-Varianten')
+plt.legend(title='UnionFind Variante')
+plt.tight_layout()
+
+
+plt.savefig("kruskal_comparison.pdf")
+plt.close()
