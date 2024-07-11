@@ -49,7 +49,7 @@ sns.lineplot(data, x='n', y='div_by_mlogn', marker='*', linestyle='--', hue='uni
 
 
 plt.xlabel("Knotenanzahl n")
-plt.ylabel("durchschnittliche Elternarray-Zugriffe pro Kante, normalisiert mit m log(n)")
+plt.ylabel(r"durchschnittliche Elternarray-Zugriffe pro Kante, \\n normalisiert mit $m\cdot \log(n)$")
 plt.title('Elternarray-Zugriffe pro Kante für verschiedene UnionFind-Varianten')
 plt.legend(title='UnionFind Variante')
 plt.tight_layout()
