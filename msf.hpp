@@ -93,15 +93,11 @@ class UnionFind {
     num_groups--;
   }
 
-  bool combine(Node x, Node y) {
+  void combine(Node x, Node y) {
     Node root_x = find(x);
     Node root_y = find(y);
 
-    // already united, returns false as in "unsuccessful"
-    if (root_x == root_y) return false;
-
     link(root_x, root_y);
-    return true;
   }
 
   Node get_parent(Node x) {  //
@@ -154,30 +150,21 @@ KruskalResult kruskal(std::vector<Edge> &edges) {
   UnionFind uf(n + 1);
   Weight total_weight = 0;
 
-  // INFO: I didn't know, if i could sort this vector in-place, so i settled for
-  // a common ground, which in this case, is a priority_queue
-  std::priority_queue pq(edges.begin(), edges.end(),
-                         [](Edge a, Edge b) { return a.weight > b.weight; });
+  // Step 1: Sort the edges vector in-place
+  std::sort(edges.begin(), edges.end(), [](const Edge& a, const Edge& b) {
+    return a.weight < b.weight; // Note: Sorting in ascending order of weights
+  });
 
-  while (!pq.empty()) {
-    Edge edge = pq.top();
-    if (uf.combine(edge.from, edge.to)) {
+  // Step 2: Iterate through the sorted vector of edges
+  for (const Edge& edge : edges) {
+    // Check if the nodes are in different sets
+    if (uf.find(edge.from) != uf.find(edge.to)) {
+      // Since they are in different sets, combine them
+      uf.combine(edge.from, edge.to);
+      // Add the edge to the MSF and update the total weight
       msf_edges.push_back(edge);
       total_weight += edge.weight;
     }
-
-    // PERF: To minimize number of uf.get_parent calls, i modified:
-    // - combine: now returns true if combined and false, if already in the same
-    //   tree
-    // - thi if: now we just check for return value of combine
-    // Previously:
-    // if (uf.get_parent(edge.from) != uf.get_parent(edge.to)) {
-    //   uf.combine(edge.from, edge.to);
-    //   msf_edges.push_back(edge);
-    //   total_weight += edge.weight;
-    // }
-
-    pq.pop();
   }
 
   return KruskalResult{msf_edges, total_weight, uf.number_of_groups() == 1,
