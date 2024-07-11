@@ -4,10 +4,5 @@ Die Anzahl der Zugriffe auf das Elternarray ist ein guter Proxywert für die Eff
 
 ### Beobachtungen aus dem zweiten Plot:
 
-Der zweite Plot zeigt die normalisierten Zugriffe auf das Elternarray. Wenn die Algorithmen 'PCOnly' und 'RankOnly' eine amortisierte Laufzeit von O(log n) haben, sollten die normalisierten Werte weniger stark mit der Knotenanzahl ansteigen und eine flachere Kurve bilden. Dies bestätigt die theoretische Analyse der Effizienz dieser Algorithmen.
-
-
-
-
-
+Der zweite Plot zeigt die normalisierten Zugriffe auf das Elternarray. Die Methode mit Union-by-Rank fällt schneller ab als die Methode mit Rangkompression. Beide Methoden fallen schneller als m log(n) ab (keine Konvergenz ersichtlich), was mit der Beschreibung der kombinierten Methode- (besser als naiv, aber noch nicht so gut wie kombiniert -, welche der inversen Ackermannfunktion folgen sollen (sieh VL), übereinstimmt (= schneller als logarithmischer Abfall).
  

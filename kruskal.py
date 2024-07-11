@@ -38,19 +38,18 @@ plt.close()
 
 # Erstellen des zweiten Plots
 data = data.loc[data['unionfind'].isin(['pc','rank'])]
-data['mlogn'] = data['accesses'] * data['m']
+data['div_by_mlogn'] = data['accesses'] / (np.log2(data['n']) * data['m'])
 
 plt.figure(figsize=(12, 6))
 sns.set(style="whitegrid")
 
 plt.xscale('log')
-plt.yscale('log')
 
-sns.lineplot(data, x='n', y='mlogn', marker='*', linestyle='--', hue='unionfind', errorbar='sd')
+sns.lineplot(data, x='n', y='div_by_mlogn', marker='*', linestyle='--', hue='unionfind', errorbar='sd')
 
 
 plt.xlabel("Knotenanzahl n")
-plt.ylabel("durchschnittliche Elternarray-Zugriffe pro Kante,  m log(n)")
+plt.ylabel("durchschnittliche Elternarray-Zugriffe pro Kante, normalisiert mit m log(n)")
 plt.title('Elternarray-Zugriffe pro Kante für verschiedene UnionFind-Varianten')
 plt.legend(title='UnionFind Variante')
 plt.tight_layout()
