@@ -1,3 +1,4 @@
+import numpy as np
 from numpy import std, median
 
 pc = [85519840, 85359474, 85430228, 85495475, 85400741]
