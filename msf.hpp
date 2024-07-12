@@ -79,6 +79,11 @@ class UnionFind {
   }
 
   void link(Node root_x, Node root_y) {
+    if (root_x == root_y) {
+      // They are already in the same group, no need to combine further.
+      return;
+    }
+
     if constexpr (UnionByRank) {
       if (rank[root_y] < rank[root_x])
         parents.set_parent(root_y, root_x);
